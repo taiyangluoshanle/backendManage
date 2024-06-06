@@ -1,83 +1,54 @@
-import React, { useState } from "react";
+// src/App.tsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Layout, Menu } from 'antd';
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
+  HomeOutlined,
   UserOutlined,
-} from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+  SettingOutlined,
+} from '@ant-design/icons';
 
-import AppRoutes from "./Router";
+import Home from './pages/Home';
+import About from './pages/Product';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const App: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const menuItems = [
+    {
+      key: '1',
+      icon: <HomeOutlined />,
+      label: <Link to="/">Home</Link>,
+    },
+    {
+      key: '2',
+      icon: <UserOutlined />,
+      label: <Link to="/about">About</Link>,
+    },
+    {
+      key: '3',
+      icon: <SettingOutlined />,
+      label: <Link to="/settings">Settings</Link>,
+    },
+  ];
   return (
-    <div className=" h-screen">
-      <Layout className="h-full">
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            // items={[
-            //   {
-            //     key: "1",
-            //     icon: <UserOutlined />,
-            //     label: "nav 1",
-            //   },
-            //   {
-            //     key: "2",
-            //     icon: <VideoCameraOutlined />,
-            //     label: "nav 2",
-            //   },
-            //   {
-            //     key: "3",
-            //     icon: <UploadOutlined />,
-            //     label: "nav 3",
-            //   },
-            // ]}
-          >
-            <Menu.Item key="1" icon={<UserOutlined />}>
-              <a href="/">Home</a>
-            </Menu.Item>
-            <Menu.Item key="1" icon={<UserOutlined />}>
-              <a href="/products">products</a>
-            </Menu.Item>
+    <Router>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider>
+          <Menu theme="dark" mode="inline" items={menuItems}>
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }}>
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: "16px",
-                width: 64,
-                height: 64,
-              }}
-            />
-          </Header>
-          <Content
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: 280,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            {/* <ProductList /> */}
-            <AppRoutes />
+          <Header style={{ background: '#fff', padding: 0 }} />
+          <Content style={{ margin: '16px' }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
           </Content>
         </Layout>
       </Layout>
-    </div>
+    </Router>
   );
 };
 
